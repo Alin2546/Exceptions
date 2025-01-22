@@ -5,8 +5,25 @@ package org.example;
  */
 public class App {
     public static void main(String[] args) {
-        Student student = new Student("Alin", "Anghel", "16.07.1800", Gender.M, 5000716);
+        Student student = new Student("Alin", "Anghel", "16.07.2000", Gender.M, "5000716226730");
+        Student student2 = new Student("Bogdan", "Ilie", "16.07.1950", Gender.M, "500071622612");
+        Student student3 = new Student("Cristian", "Castan", "16.07.2006", Gender.F, "5000716321730");
         StudentRepo studentRepo = new StudentRepo();
+
+        studentRepo.add(student2);
+        studentRepo.add(student3);
         studentRepo.add(student);
+
+
+
+        studentRepo.displayStudents();
+
+
     }
+
+
 }
+
+
+
+
