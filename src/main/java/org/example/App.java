@@ -18,12 +18,11 @@ public class App {
         studentRepo.add(student3);
         studentRepo.add(student);
         try {
-            studentRepo.delete("1234123");
+            studentRepo.delete("5000716226730");
         } catch (IdentifierEmptyException | StudentMissingException e) {
             throw new RuntimeException(e);
         }
         studentRepo.displayStudents();
-
 
     }
 

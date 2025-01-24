@@ -3,10 +3,11 @@ package org.example;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+
 
 class StudentRepoTest {
 
@@ -74,7 +75,7 @@ class StudentRepoTest {
     }
 
     @Nested
-    class deletetionTests {
+    class deletionTests {
         @Test
         void deleteOneInput() {
             studentRepo.add(student);
@@ -121,20 +122,52 @@ class StudentRepoTest {
         }
     }
 
+
+    @Test
+    void retrieveAllNegativeAgeException() {
+        studentRepo.add(student);
+        assertThrows(NegativeAgeException.class, () -> studentRepo.retrieveAll(-1), "Invalid Age");
+
+    }
+
     @Nested
-    class retrieveAllTests {
+    class actualAgeTests {
         @Test
-        void retrieveAllOneInput() {
-            studentRepo.add(student);
-            studentRepo.retrieveAll();
+        void actualAgeNoInput() {
+            assertThrows(IndexOutOfBoundsException.class, () -> studentRepo.actualAge(""), "Birth date is invalid");
+        }
+
+        @Test
+        void actualAgeOneInput() {
+            assertEquals(27, studentRepo.actualAge(student.getDateOfBirth()));
+        }
+
+        @Test
+        void actualAgeSpecialCharactersException() {
+            assertThrows(SpecialCharactersAgeException.class, () -> studentRepo.actualAge("*23ac!@#$#%^"), "Invalid Characters");
+        }
+
+        @ParameterizedTest
+        @CsvSource({
+                "16.07.2000, 25",
+                "01.01.1999, 26",
+                "05.12.2012, 13",
+                "12.12.1900, 125",
+                "04.06.2012, 13",
+                "12.12.1955, 70",
+                "31.11.1231, 794",
+                "23.08.1111, 914",
+        })
+        void actualAgeManyInputs(String dateOfBirth, int expected) {
+            assertEquals(expected, studentRepo.actualAge(dateOfBirth));
         }
     }
 
-    @Test
-    void actualAge() {
-    }
 
     @Test
-    void displayStudents() {
+    void displayStudentsEmptyNameException() {
+        student.setLastName("");
+        assertThrows(NameEmptyException.class, () -> studentRepo.add(student), "Invalid name");
+
     }
 }

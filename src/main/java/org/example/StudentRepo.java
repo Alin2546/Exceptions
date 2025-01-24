@@ -88,9 +88,9 @@ public class StudentRepo {
     void displayStudents() throws EmptyAgeException, NameEmptyException {
         studentSet.forEach(student -> {
             if (student.getLastName().isEmpty()) {
-                throw new EmptyAgeException("Last name is empty");
+                throw new NameEmptyException("Invalid name");
             } else if (student.getDateOfBirth().isEmpty()) {
-                throw new NameEmptyException("Birth date missing");
+                throw new EmptyAgeException("Birth date missing");
             }
             System.out.println(student);
         });
